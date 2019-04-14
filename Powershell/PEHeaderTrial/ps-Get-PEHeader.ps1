@@ -896,7 +896,8 @@ PROCESS {
         }
 
     }
-    
+    # convert the RVA (Relative Virtual Address) into an Offset
+    # this must be for processes in memory
     function Convert-RVAToFileOffset([IntPtr] $Rva)
     {
     
@@ -932,6 +933,7 @@ PROCESS {
     $PEHeader = New-Object PSObject -Property $PEFields
     $PEHeader.PSObject.TypeNames.Insert(0, 'PEHeader')
 
+    # get Symbols so the script can display function names
     $ScriptBlock = {
         $SymServerURL = 'http://msdl.microsoft.com/download/symbols'
         $FileName = $this.Module.Split('\')[-1]
