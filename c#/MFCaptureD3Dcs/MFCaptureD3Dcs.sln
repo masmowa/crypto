@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFCaptureD3Dcs", "MFCaptureD3Dcs\MFCaptureD3Dcs.csproj", "{5D148B56-FC72-4446-AF53-8A1C835912DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeAdapter", "..\..\..\Proj\c#\NativeAdapter\NativeAdapter.csproj", "{C630F66D-0737-4340-B0E4-8A1ACB7E6E55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D148B56-FC72-4446-AF53-8A1C835912DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D148B56-FC72-4446-AF53-8A1C835912DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D148B56-FC72-4446-AF53-8A1C835912DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D148B56-FC72-4446-AF53-8A1C835912DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C630F66D-0737-4340-B0E4-8A1ACB7E6E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C630F66D-0737-4340-B0E4-8A1ACB7E6E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C630F66D-0737-4340-B0E4-8A1ACB7E6E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C630F66D-0737-4340-B0E4-8A1ACB7E6E55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

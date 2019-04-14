@@ -1,0 +1,9 @@
+﻿readme
+this link has information about parsing the device symbolic link
+https://social.msdn.microsoft.com/Forums/windowsdesktop/en-us/eea9661b-0952-464b-bec1-826e1675a18b/about-directshow-automatic-combine-video-capture-device-and-audio-capture-device?forum=windowsdirectshowdevelopment
+
+make a friendly name
+http://www.developerfusion.com/article/84338/making-usb-c-friendly/
+
+management object searcher
+http://stackoverflow.com/questions/3858723/c-sharp-net-managementobjectsearcher-query?rq=1
