@@ -11,6 +11,7 @@ function Get-PEHaeder {
         [String[]]$FilePath
     )
 PROCESS {
+        write-host ("++{0}" -f $MyInvocation.MyCommand.Name) 
     # I am going to write a short explanation of the code I borrowedfrom PowerSploit project
     # the try block trys to "output" the type [PE] piping the error output to the NUL object
     # the catch block will activate on a [Management.Automation.RuntimeException] type
@@ -20,6 +21,7 @@ PROCESS {
     # for the layout of the PE header that is the first X bytes of any PE binary
     # after the string are some instructions to invoke the .NET JIT (Just In Time compiler)
     try { [PE] | Out-Null } catch [Management.Automation.RuntimeException] {
+        write-host "[PE] NOT DEFINED ..."
         $code = @"
         using System;
         using System.Runtime.InteropServices;
@@ -386,7 +388,6 @@ PROCESS {
         # 4) invoke the compiler with no output to the console
         Add-Type -TypeDefinition $code -CompilerParameters $compileParams -PassThru -WarningAction SilentlyContinue | Out-Null
    }
-# process {
     $MZ_OFFSET              = 0X00000000
     $MZ_SIZE                = 0X00000002
     $PE_OFFSET_OFFSET       = 0X0000003C  # contains 4 byte integer with the offsetof the PE header in the image
