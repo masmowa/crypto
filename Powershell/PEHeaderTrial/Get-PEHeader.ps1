@@ -1,9 +1,14 @@
+    <#
+        $FileStream = New-Object System.IO.FileStream($FilePath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
+        $FileByteArray = New-Object Byte[]($FileStream.Length)
+        $FileStream.Read($FileByteArray, 0, $FileStream.Length) | Out-Null
+        $FileStream.Close()
+        $Handle = [System.Runtime.InteropServices.GCHandle]::Alloc($FileByteArray, 'Pinned')
+        $PEBaseAddr = $Handle.AddrOfPinnedObject()
+
+    #>
 
 function Get-PEHaeder {
-    <#
-
-
-#>
     [cmdletbinding(DefaultParameterSetName = 'OnDisk')]
     param(
         [Parameter(Position = 0, Mandatory = $True, ParameterSetName = 'OnDisk', ValueFromPipelineByPropertyName = $True)] 
@@ -502,16 +507,11 @@ PROCESS {
             Write-Error "In-Memory not supported"
         }
 
+        $PEHeader = New-Object PSObject -Property $PEFields
+        $PEHeader.PSObject.TypeNames.Insert(0, 'PEHeader')
+    
         write-host ( "last optional header {0}" -f $PEFields.OptionalHeader[$NumSections-1])
 
 }
+    return $PEHeader
 }
-<#
-        $FileStream = New-Object System.IO.FileStream($FilePath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
-        $FileByteArray = New-Object Byte[]($FileStream.Length)
-        $FileStream.Read($FileByteArray, 0, $FileStream.Length) | Out-Null
-        $FileStream.Close()
-        $Handle = [System.Runtime.InteropServices.GCHandle]::Alloc($FileByteArray, 'Pinned')
-        $PEBaseAddr = $Handle.AddrOfPinnedObject()
-
-#>

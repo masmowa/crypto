@@ -1,0 +1,55 @@
+void randomizeArray(vector<int> arr)
+{
+    for (size_t i = 0; i< arr.size(); ++i)
+    {
+        int temp = arr[i];
+        int offset = (i + (arr.size()/2)) % arr.size();
+        int new_location = (random(arr.size()) + offset) % arr.size();
+        int temp2 = arr[new_location];
+        arr[i] = temp2;
+        arr[new_location] = temp;
+    }
+}
+
+design
+Q2: Amazon Locker
+// An Amazon pickup location has a series of lockers for packages to be dropped off and picked up. 
+Haotian
+
+// Q2: Amazon Locker
+// An Amazon pickup location has a series of lockers for packages to be dropped off and picked up. Packages can come in many different sizes. We have lockers of varying sizes as well. 
+// Model the lockers, packages and pickup location and implement an algorithm for efficiently finding the best possible empty locker for a given package.
+// Location: A collection of lockers
+// locker: One locker box that can hold a package
+// package: A package that goes into a locker
+
+class Location
+{
+    number of lockers
+    map<locker>
+    list occupied
+    list empty
+    
+    Locker findLocker(Package packagee) {
+        
+    }
+}
+
+class locker
+{
+    id
+    int size; // volume
+    bool in_use
+}
+
+class package {
+    int size;
+}
+
+enumeration of sizes
+1=letter 
+2= cloathing // 6"x12
+3=
+
+[January 10, 2020, 9:04 AM] Sun, Haotian: Hi Mark - I could not hear you. Let me know if you can hear me
+[January 10, 2020, 9:14 AM] Sun, Haotian: https://livecode.amazon.jobs/session/471fecd7-e7a8-4273-bfb1-620e67691050

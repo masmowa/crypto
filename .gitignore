@@ -1,0 +1,60 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.po
+*.suo
+
+# Precompiled Headers
+*.gch
+*.pch
+*.pdb
+*.ipch
+
+# visual studio
+*.user
+*.manifest
+*.cache
+
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# NuGet package
+*.nupkg
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#output folders/directories
+**/obj/
+**/bin/
+**/po/
+**/lib/
+**/debug/
+**/release/
+**/.vs/
+**/.vscode/
+
+
+
+c#/caSetupDiEnumDeviceInterfacesReturnsError87fix/caSetupDiEnumDeviceInterfacesReturnsError87fix/App.config
+ps.code-workspace
