@@ -3,43 +3,57 @@
 
 #include <iostream>
 #include <map>
-#include <standard-include.h>
+#include <list>
+#include <vector>
 
-class CharFrequency {
-public:
-	map<char, double> english_freq;
-	CharFrequency()
+#include <standard-include.h>
+#include "EnCharFrequency.h"
+#include "CharPtFreqCtFreq.h"
+#include "CharFreqNode.h"
+#include "MessageInfo.h"
+
+using namespace std;
+
+typedef std::map<char, int> CharCount;
+typedef std::map<char, CharPtFreqCtFreq> CharFreqMap;
+
+void InsertNode(CharFreqNode** head, double fq, char ch)
+{
+	CharFreqNode* node = new CharFreqNode(ch, fq);
+	if (NULL == *head)
 	{
-		english_freq = {
-			std::pair<unsigned char, double>('a', 0.0817),
-			std::pair<unsigned char, double>('b', 0.0150),
-			std::pair<unsigned char, double>('c', 0.0278),
-			std::pair<unsigned char, double>('d', 0.0425),
-			std::pair<unsigned char, double>('e', 0.1270),
-			std::pair<unsigned char, double>('f', 0.0223),
-			std::pair<unsigned char, double>('g', 0.0202),
-			std::pair<unsigned char, double>('h', 0.0609),
-			std::pair<unsigned char, double>('i', 0.0697),
-			std::pair<unsigned char, double>('j', 0.0015),
-			std::pair<unsigned char, double>('k', 0.0077),
-			std::pair<unsigned char, double>('l', 0.0403),
-			std::pair<unsigned char, double>('m', 0.0241),
-			std::pair<unsigned char, double>('n', 0.0675),
-			std::pair<unsigned char, double>('o', 0.0751),
-			std::pair<unsigned char, double>('p', 0.0193),
-			std::pair<unsigned char, double>('q', 0.0010),
-			std::pair<unsigned char, double>('r', 0.0599),
-			std::pair<unsigned char, double>('s', 0.0633),
-			std::pair<unsigned char, double>('t', 0.0906),
-			std::pair<unsigned char, double>('u', 0.0276),
-			std::pair<unsigned char, double>('v', 0.0098),
-			std::pair<unsigned char, double>('w', 0.0236),
-			std::pair<unsigned char, double>('x', 0.0015),
-			std::pair<unsigned char, double>('y', 0.0197),
-			std::pair<unsigned char, double>('z', 0.0007)
-		};
+		*head = node;
 	}
-};
+	else
+	{
+		if (ch == 'k')
+		{
+			std::cout << "[" << ch << "," << fq << "]" << std::endl;
+		}
+		if (ch == 'f')
+		{
+			std::cout << "[" << ch << "," << fq << "]" << std::endl;
+		}
+	}
+}
+void DeleteNodes(CharFreqNode* head)
+{
+	CharFreqNode* w = head;
+	CharFreqNode* nxt = w->next;
+	while (w != NULL) {
+		nxt = w->next;
+		w->next = NULL;
+		w->prev = NULL;
+		delete w;
+		w = nxt;
+	} 
+
+
+}
+
+void CountMessageCharacters(const std::string& msg)
+{
+}
 
 void ProcessInput(std::string const& input)
 {
@@ -66,9 +80,11 @@ void ProcessInput(std::string const& input)
 	{
 		cout << intoks[i] << std::endl;
 	}
-	typedef std::map<char, int> CharCount;
-	CharCount ccmap;
+
+
+	CharCount ctCountmap;
 	CharCount::iterator cci;
+	std::list<CharFreqNode> ctCFList;
 	string ct = intoks[1];
 	for (size_t i = 0; i < ct.size(); ++i)
 	{
@@ -91,18 +107,112 @@ void ProcessInput(std::string const& input)
 	// find the frequency of each char in the cipher text
 	// ****************
 	typedef map<char, double> CipherTextFreqCountMap;
+	typedef map<char, double> CharFreqCountMap;
+	typedef map<double, char> FreqToCharMap;
+
 	CipherTextFreqCountMap ctfMap;
+	PTCharFrequency encf;
+	FreqToCharMap ctf2c;
 
 	size_t ctcount = ct.size();
-	for (auto itccm = ccmap.begin(); itccm != ccmap.end(); ++itccm)
+	size_t fcnt = 0;
+	size_t afcnt = 0;
+	cout.precision(4);
+	CharFreqNode* fcnHead = NULL;
+	// ********
+	// create map with freq as key
+	// ********
+	CharFreqCountMap::iterator ipt;
+	CharFreqMap charPtCtFreqMap;
+
+
+	for (auto itccm = ccmap.begin(), ipt = encf.english_freq.begin(); itccm != ccmap.end(); ++itccm)
 	{
 		double freq = static_cast<double>(itccm->second) / static_cast<double>(ctcount);
+		ipt = encf.ptF2C.find(itccm->first);
 		ctfMap.insert(pair<char, double>(itccm->first, freq));
+		if (ipt != encf.ptF2C.end())
+		{
+			CharPtFreqCtFreq t(itccm->first, ipt->second, freq);
+			charPtCtFreqMap.insert(itccm->first, t);
+		}
+		if (' ' != itccm->first) {
+			cout << setw(2) << fcnt << "  ";
+			cout << "F[" << freq << "] C[" << itccm->first <<"]" << std::endl;
+			ctf2c.insert(pair<double, char>(freq, itccm->first));
+			fcnt++;
+			// note: there are frequencies that are equal 
+			// so I need a a container with multiple entries with the same key and different value
+
+		afcnt++;
 	}
+	cout << "ctf2c size: " << ctf2c.size() << " afcnt " << afcnt << " fcnt " << fcnt << std::endl;
+
 	for (CipherTextFreqCountMap::iterator t = ctfMap.begin(); t != ctfMap.end(); ++t)
 	{
 		cout << t->first << " " << t->second << std::endl;
 	}
+
+	// ********
+	// print map with freq as key
+	// ********
+	FreqToCharMap::iterator ict;
+	CharFreqNode* w;
+	size_t cnt = 0;
+	cout.precision(4);
+	for (cnt = 0, ict = ctf2c.begin(), ipt = encf.ptF2C.begin(), w = fcnHead; (ict != ctf2c.end() || ipt != encf.ptF2C.end()) && w != NULL;++cnt, w = w->next)
+	{
+		cout << setw(2) << cnt << "  ";
+		if (ipt != encf.ptF2C.end()) {
+			cout << "PT[" << ipt->first << ", " << ipt->second << "] ";
+			++ipt;
+		}
+		if (ict != ctf2c.end()) {
+			cout << "CT[" << ict->first << ", " << ict->second << "]";
+			++ict;
+		}
+		if (w) {
+			w->Print();
+		}
+		cout << std::endl;
+	}
+	
+
+
+	// ****************
+	// Now Find matches from english char frequency to cipher-text character frequency
+	// ****************
+	
+	for (CipherTextFreqCountMap::iterator itct = ctfMap.begin(); itct != ctfMap.end(); ++itct)
+	{
+		CharFreqCountMap::iterator itenfc_prev = encf.english_freq.begin();
+		for (CharFreqCountMap::iterator itenfc = encf.english_freq.begin(); itenfc != encf.english_freq.end(); ++itenfc)
+		{
+			if (itenfc->second == itct->second) {
+				// exact match !!
+				cout << "CT [" << itct->first << ", " << itct->second << "]" << " -> PT [" << itenfc->first << ", " << itenfc->second << "]" << std::endl;
+				itenfc_prev = itenfc;
+				break;
+			}
+			else if (itenfc->second < itct->second) {
+				itenfc_prev = itenfc;
+
+			}
+			else if (itenfc->second > itct->second&& itenfc_prev->second < itct->second)
+			{
+				// not exact match, but in range
+				cout << "PT [" << itenfc_prev->first << ", " << itenfc_prev->second << "] < ";
+				cout << "CT[" << itct->first << ", " << itct->second << "] < ";
+				cout << "PT [" << itenfc->first << ", " << itenfc->second << "]" << std::endl;
+				break;
+			}
+			else {
+				itenfc_prev = itenfc;
+
+			}
+		}
+	}
+
 }
 int main()
 {
