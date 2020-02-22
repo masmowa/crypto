@@ -1,0 +1,93 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# visual studio
+*.user
+*.manifest
+*.cache
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+# project files
+.*
+!/.gitignore
+
+**/Challenges/**/.suo
+
+#output folders/directories
+**/obj/
+**/bin/
+**/.vs/
+
+/Challenges/ArrayOfChoices/ArrayOfChoices/obj/Debug/ArrayOfChoices.csproj.FileListAbsolute.txt
+/Challenges/ArrayOfChoices/ArrayOfChoices/obj/Debug/ArrayOfChoices.csprojResolveAssemblyReference.cache
+/Challenges/ArrayOfChoices/ArrayOfChoices/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Challenges/ArrayOfChoices/ArrayOfChoices/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/ArrayOfChoices/ArrayOfChoices/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/ArrayOfChoices/ArrayOfChoices/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/ComboGenTest/ComboGenTest/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/ComboGenTest/ComboGenTest/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/ComboGenTest/ComboGenTest/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/Sherlock-PermutationsOnes/Sherlock-PermutationsOnes/bin/Debug/Sherlock-PermutationsOnes.exe.config
+/Challenges/Sherlock-PermutationsOnes/Sherlock-PermutationsOnes/bin/Debug/Sherlock-PermutationsOnes.vshost.exe.config
+/Challenges/Sherlock-PermutationsOnes/Sherlock-PermutationsOnes/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/Sherlock-PermutationsOnes/Sherlock-PermutationsOnes/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/Sherlock-PermutationsOnes/Sherlock-PermutationsOnes/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/Sherlock-PermutationsOnes/.vs/Sherlock-PermutationsOnes/v14/.suo
+/Challenges/BearAndSteadyGene/BearAndSteadyGene/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/BearAndSteadyGene/BearAndSteadyGene/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/BearAndSteadyGene/BearAndSteadyGene/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/BSGen2/BSGen2/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/BSGen2/BSGen2/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/BSGen2/BSGen2/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/nCrTable/nCrTable/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/nCrTable/nCrTable/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/nCrTable/nCrTable/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/mutual-recurrences/mutual-recurrences/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/mutual-recurrences/mutual-recurrences/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/mutual-recurrences/mutual-recurrences/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/PossiblePath/PossiblePath/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/PossiblePath/PossiblePath/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/PossiblePath/PossiblePath/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/FibonacciFinding/FibonacciFinding/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/FibonacciFinding/FibonacciFinding/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/FibonacciFinding/FibonacciFinding/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/C23Fibonacci/C23Fibonacci/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/C23Fibonacci/C23Fibonacci/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/C23Fibonacci/C23Fibonacci/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/FibFindingMatrix/FibFindingMatrix/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/FibFindingMatrix/FibFindingMatrix/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/FibFindingMatrix/FibFindingMatrix/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/Matrix-Tracing/Matrix-Tracing/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/Matrix-Tracing/Matrix-Tracing/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/Matrix-Tracing/Matrix-Tracing/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Challenges/Even-Tree/Even-Tree/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Challenges/Even-Tree/Even-Tree/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Challenges/Even-Tree/Even-Tree/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs

@@ -182,6 +182,7 @@ void ProcessInput(std::string const& input)
 	std::cout << "Percent " << std::endl;
 	msgInfo.printCharPercent();
 	msgInfo.printWordPercent();
+	msgInfo.PrintWordsBySizePercent();
 
 }
 int main()
