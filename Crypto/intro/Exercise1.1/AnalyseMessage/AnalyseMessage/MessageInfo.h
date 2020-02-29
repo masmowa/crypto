@@ -3,22 +3,18 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <algorithm>
+#include <sstream>
 
 #include "CharFreqNode.h"
 #include "parseUtil.h"
+#include "MessageInfo_base.h"
 
-class MessageInfo
+class MessageInfo : public MessageInfo_base
 {
 public:
-	typedef std::map<char, double> CharFreqPercentMap;
-	typedef std::map<std::string, double> WordFreqPercentMap;
-	typedef std::map<char, int> CharCountMap;
-	typedef std::map<std::string, int> WordCountMap;
-	typedef std::pair<std::string, double> WordData;
-	typedef std::list<WordData> WordFreqList;
-	typedef std::list<WordData> ListWordData;
-	typedef std::list < std::list<WordData> > ListListWordFreq;
-	typedef std::vector< WordFreqList > VectorListWordFreq;
+	typedef std::list<CipherToPlain> MatchCTtoPT;
+	typedef std::map<char, char> CipherKeyMap;
 
 
 	std::string msg;
@@ -31,7 +27,9 @@ public:
 	WordFreqPercentMap wordPercentMap;
 	VectorListWordFreq wordsByCharCount;
 	ListListWordFreq wordsListsByFreq;
-	
+	CipherKeyMap cipherKeyMap;
+	MapCTtoPT mapCtPtGuess;
+
 	MessageInfo(std::string m)
 		: msg(m)
 	{
@@ -111,10 +109,10 @@ public:
 		for (WordCountMap::iterator itwcm = wordCount.begin(); itwcm != wordCount.end(); ++itwcm)
 		{
 			double freq = static_cast<double>(itwcm->second) / static_cast<double>(wdcount);
-			WordData data(itwcm->first, freq);
+			PairWordFreq data(itwcm->first, freq);
 			if (itwcm->first == "")
 			{
-				WordFreqList v;
+				ListWordFreq v;
 				v.push_back(data);
 				if (wordsByCharCount.empty()) {
 					wordsByCharCount.push_back(v);
@@ -132,11 +130,17 @@ public:
 				wordsByCharCount[pos].push_back(data);
 			}
 		}
+		// create sorted vector of words of size N smallest to frequency to largest
+		// note seems I cannot just do not-less-than that causes an exception (probably for )
 		VectorListWordFreq::iterator itVecListWF;
-		WordFreqList::iterator itListWF;
+		ListWordFreq::iterator itListWF;
 		for (VectorListWordFreq::iterator itvlwf = wordsByCharCount.begin(); itvlwf != wordsByCharCount.end(); ++itvlwf) {
-			(*itvlwf).sort([](const WordData& a, const WordData& b) { return (a.second < b.second); });
+			(*itvlwf).sort([](const PairWordFreq& a, const PairWordFreq& b) { return (a.second < b.second); });
+			// now reverse the sort order of the sum-list, because I want the word with the greatest frequency to be first
+			(*itvlwf).reverse();
 		}
+		// simplify accessing words in most frequent order (highest to lowest)
+		//std::reverse(wordsByCharCount.begin(), wordsByCharCount.end());
 
 	}
 	void printCharPercent()
@@ -165,8 +169,10 @@ public:
 	}
 	void PrintWordsBySizePercent()
 	{
+		size_t wdsize = 0;
 		for (VectorListWordFreq::iterator itvlwf = wordsByCharCount.begin(); itvlwf != wordsByCharCount.end(); ++itvlwf)
 		{
+			std::cout << "[" << wdsize << "]" << std::endl;
 			for (ListWordData::iterator itlwd = (*itvlwf).begin(); itlwd != (*itvlwf).end(); ++itlwd) {
 				if (itlwd->first == "") {
 					std::cout << "[empty]" << "[" << itlwd->second << "]" << std::endl;
@@ -175,7 +181,129 @@ public:
 					std::cout << "[" << itlwd->first << "]" << "[" << itlwd->second << "]" << std::endl;
 				}
 			}
+			wdsize++;
 		}
+	}
+	void GuessWordsFromNCharWidth(size_t wdSize, const VectorListWordByFreq& vlwbf) {
+
+		for (size_t i = wdSize; i > 0; --i)
+		{
+			GuessWordsByFreqAt(i, vlwbf[i]);
+		}
+	}
+
+	void GuessWordsByFreqAt(size_t wdSize, const MessageInfo_base::ListWords& enWordList)
+	{
+		// 1) get the ultimate and pen-ultimate words of size wdSize
+		// 2) get the ultiate and pen-ultimate words of size wdSize -1
+		// 3) catagorize characters that match in seected words
+		// 4) pick english words that have maximum match as guess
+		// get list of cipher text (CT) of words of size wdSize
+		
+		VWords CtAszWords = this->GetTop3CTWords(wdSize);
+		
+
+		ListWordFreq& lstCtWdFreq = wordsByCharCount[wdSize];
+
+		// get list of cipher text (CT) of words of size wdSize-1
+		ListWordFreq& lstCtWdFreqM = wordsByCharCount[wdSize-1];
+
+		size_t ndxWdFreq = lstCtWdFreq.size() - 1;
+
+		MessageInfo_base::ListWordFreq::iterator ctWdFqIt = lstCtWdFreq.begin();
+		std::advance(ctWdFqIt, ndxWdFreq-1);
+
+		MessageInfo_base::ListWords::const_iterator enwit = enWordList.begin();
+
+		std::cout << "ndx[" << ndxWdFreq << "] ";
+		std::cout << "[" << ctWdFqIt->first << "," << ctWdFqIt->second << "]" << std::endl;
+		std::advance(ctWdFqIt, 1);
+		std::cout << "ndx[" << ndxWdFreq+1 << "] ";
+		std::cout << "[" << ctWdFqIt->first << "," << ctWdFqIt->second << "]" << std::endl;
+		std::cout << "english: " << "[" << *enwit << "]" << std::endl;
+
+		//std::vector<std::string> CTGuess
+	}
+	std::vector<std::string> GetTop3CTWords(size_t wdSz)
+	{
+		VWords top3;
+
+		ListWordFreq& lstCtWdFreq = wordsByCharCount[wdSz];
+		size_t ndxWdFreq = lstCtWdFreq.size() - 3;
+		MessageInfo_base::ListWordFreq::iterator ctWdFqIt = lstCtWdFreq.begin();
+		std::cout << "CT: "; // << most << " mid: " << mid << " least: " << least
+		for (size_t i = 0; i < 3 && ctWdFqIt != lstCtWdFreq.end(); ++i, ++ctWdFqIt)
+		{
+			std::cout << ctWdFqIt->first << " ";
+			top3.push_back(ctWdFqIt->first);
+		}
+		std::cout << std::endl;
+		return top3;
+	}
+
+	MessageInfo_base::ListWordFreq& GetListWordFreqAtLen(size_t wdSz)
+	{
+		return  wordsByCharCount[wdSz];;
+	}
+
+	// make a std::list as a copy of the words from the 
+	// "frequency sorted" pair(word, freq) list, for words of size wdSz
+	// 
+	// param: size_t wdSz : size of words we want
+	ListWords GetWordListAt(size_t wdSz)
+	{
+		ListWords listWd;
+
+		ListWordFreq& lstCtWdFreq = wordsByCharCount[wdSz];
+		
+		std::cout << "CT: "; 
+		for (MessageInfo_base::ListWordFreq::iterator ctWdFqIt = lstCtWdFreq.begin(); ctWdFqIt != lstCtWdFreq.end(); ++ctWdFqIt)
+		{
+			std::cout << ctWdFqIt->first << " ";
+			listWd.push_back(ctWdFqIt->first);
+		}
+		std::cout << std::endl;
+		return listWd;
+	}
+
+	void GuessWordWithNChar(size_t wdSize, const VectorListWordByFreq& vlwbf) {
+		if (4 == wdSize && wdSize < vlwbf.size()) {
+			Guess4CharWord(vlwbf[wdSize]);
+		}
+	}
+	void Guess4CharWord(const MessageInfo_base::ListWords& enWord4Char)
+	{
+		std::cout << "4 character words:" << std::endl;
+		VectorListWordFreq::iterator vlwfIt = wordsByCharCount.begin();
+		size_t ndx = 0;
+		for (vlwfIt = wordsByCharCount.begin(), ndx = 0; vlwfIt != wordsByCharCount.end(); ++vlwfIt, ++ndx)
+		{
+			if (ndx == 4) {
+				break;
+			}
+			else { continue;  }
+		}
+		ListWordFreq::iterator lwfit = vlwfIt->begin();
+		PairWordFreq pwfval = vlwfIt->back();
+		MessageInfo_base::ListWords::const_iterator enwit = enWord4Char.begin();
+		std::cout << "first: " << "[" << lwfit->first << "," << lwfit->second << "]" << std::endl;
+		std::cout << "last: " << "[" << pwfval.first << "," << pwfval.second << "]" << std::endl;
+		std::cout << "english: " << "[" << *enwit <<  "]" << std::endl;
+
+
+	}
+
+	// calculate a "word score" for the string
+	// word score is a count of the occurance of eachcharacter in the word
+	// count position is based upon the initial position of the character
+	// ex. 
+	//	"the"   : "111"
+	//	"that"  : "211" 
+	//  "this"  : "1111"
+	//  "data"  : "121"
+	std::string WordScore(const std::string& word)
+	{
+		return MessageInfo_base::WordScore(word);
 	}
 };
 

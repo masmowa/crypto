@@ -21,6 +21,9 @@
     <ClCompile Include="..\..\..\..\..\Hackerrank\practice\utils\parseUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CypherKey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharFreqNode.h">
@@ -39,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Hackerrank\practice\utils\parseUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageInfo_base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CypherKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

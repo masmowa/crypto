@@ -1,13 +1,29 @@
 #pragma once
 #include <iostream>
 #include <map>
+#include <list>
+#include <vector>
+#include "MessageInfo_base.h"
 
-class EnCharFrequency
+class EnglishData : public MessageInfo_base
 {
 public:
 	typedef std::map<char, double> CharToFreqMap;
-	CharToFreqMap ctf;
-	EnCharFrequency()
+	typedef std::vector<char> AlphaByFrequency;
+	//typedef std::vector<std::string> WordByFrequency;
+	typedef std::list<std::string> WordByFrequency;
+
+	CharFreqPercentMap ctf;
+	AlphaByFrequency alphaByFreq;
+	WordByFrequency monoWdByFreq;
+	WordByFrequency wd2ByFreq;
+	WordByFrequency al2ByFreq;
+	WordByFrequency al2by2ByFreq;
+	WordByFrequency wd3ByFreq;
+	WordByFrequency wd4ByFreq;
+	AlphaByFrequency neverdouble;
+	MessageInfo_base::VectorListWordByFreq vlWordsByFreq;
+	EnglishData()
 	{
 		ctf = {
 			std::pair<unsigned char, double>('a', 0.0817),
@@ -37,6 +53,72 @@ public:
 			std::pair<unsigned char, double>('y', 0.0197),
 			std::pair<unsigned char, double>('z', 0.0007)
 		};
+		/* english characters arranged by statistical frequency in english text */
+		alphaByFreq = {'e', 't', 'a', 'o', 'i', 'n', 's', 'h', \
+			'r', 'd', 'l', 'c', 'u', 'm', 'w', 'f', \
+			'g', 'y', 'p', 'b', 'v', 'k', 'j', 'x', \
+			'q', 'z'};
+
+		/* The only one-letter words in English are */
+		monoWdByFreq = { "a", "i" };
+		/* you should never find these characters in double */
+		neverdouble = {
+			'h', 'j', 'q', 'v', 'w', 'x', 'y' };
+		/* The most common two-letter words are */
+		wd2ByFreq = {
+			"of", "to", "in", "it", "is", "be", "as", "at", "so", "we", "he", "by", "or ", "on", "do", "if", "me", "my", "up", "an", "go", "no", "us", "am"
+		};
+
+		al2ByFreq = {
+			"th", "er", "on", "an", "re", "he", "in", "ed", "nd", "ha", "at", "en", "es", "of", "or", "nt", "ea", "ti", "to", "it", "st", "io", "le", "is", "ou", "ar", "as", "de", "rt", "ve"
+		};
+		/*In English the most common repeated letters are 
+		ss, ee, tt, ff, ll, mm and oo. If the ciphertext 
+		contains any repeated characters, you can assume 
+		that they represent one of these.
+		*/
+		al2by2ByFreq = {"ss", "ee", "tt", "ff", "ll", "mm", "oo"};
+
+		wd3ByFreq = { "the", "and", "for", "are", "but", "not", "you", "all", \
+			"any", "can", "had", "her", "was", "one", "our", "out", "day", \
+			"get", "has", "him", "his", "how", "man", "new", "now", "old", \
+			"see", "two", "way", "who", "boy", "did", "its", "let", "put", \
+			"say", "she", "too", "use" };
+
+		wd4ByFreq = { "that", "with", "have", "this", "will", "your", \
+			"from", "they", "know", "want", "been", "good", "much", "some", \
+			"time" };
+		WordByFrequency wbf0 = {};
+		vlWordsByFreq.push_back(wbf0);
+		vlWordsByFreq.push_back(monoWdByFreq);
+		vlWordsByFreq.push_back(wd2ByFreq);
+		vlWordsByFreq.push_back(wd3ByFreq);
+		vlWordsByFreq.push_back(wd4ByFreq);
+
+	}
+	std::vector<std::string> GetTop3PTWords(size_t wdSz)
+	{
+		MessageInfo_base::ListWords enWordList = vlWordsByFreq[wdSz];
+		MessageInfo_base::ListWords::iterator enwlIt = enWordList.begin();
+		VWords top3;
+		for (size_t i = 0; i < 3; ++i, ++enwlIt)
+		{
+			top3.push_back(*enwlIt);
+		}
+		return top3;
+	}
+	// make a list copy of the words of size wdSz
+	// use wdSz as an index into the vector of lists of frequency sorted words
+	ListWords GetWordListAt(size_t wordSize)
+	{
+		ListWords listWd;
+		MessageInfo_base::ListWords enWordList = vlWordsByFreq[wordSize];
+		
+		for (MessageInfo_base::ListWords::iterator enwlIt = enWordList.begin(); enwlIt != enWordList.end(); ++enwlIt)
+		{
+			listWd.push_back(*enwlIt);
+		}
+		return listWd;
 	}
 };
 

@@ -153,14 +153,17 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\Hackerrank\practice\utils\parseUtil.cpp" />
     <ClCompile Include="AnalyseMessage.cpp" />
+    <ClCompile Include="CypherKey.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\Hackerrank\practice\utils\parseUtil.h" />
     <ClInclude Include="CharFreqNode.h" />
     <ClInclude Include="CharFreqSortedList.h" />
     <ClInclude Include="CharPtFreqCtFreq.h" />
+    <ClInclude Include="CypherKey.h" />
     <ClInclude Include="EnCharFrequency.h" />
     <ClInclude Include="MessageInfo.h" />
+    <ClInclude Include="MessageInfo_base.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
