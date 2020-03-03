@@ -109,16 +109,20 @@ public:
 	}
 	// make a list copy of the words of size wdSz
 	// use wdSz as an index into the vector of lists of frequency sorted words
-	ListWords GetWordListAt(size_t wordSize)
+	VWords GetWordVectorAt(size_t wordSize)
 	{
-		ListWords listWd;
-		MessageInfo_base::ListWords enWordList = vlWordsByFreq[wordSize];
-		
-		for (MessageInfo_base::ListWords::iterator enwlIt = enWordList.begin(); enwlIt != enWordList.end(); ++enwlIt)
-		{
-			listWd.push_back(*enwlIt);
-		}
-		return listWd;
+		size_t len = vlWordsByFreq[wordSize].size();
+		// seems working with vector is easier, so move wroking set to vector
+		MessageInfo_base::VWords vEnWords(len);
+		std::copy(vlWordsByFreq[wordSize].begin(), vlWordsByFreq[wordSize].end(), vEnWords.begin());
+
+		std::stringstream title;
+
+		title << "PT(" << wordSize << "): ";
+
+		MessageInfo_base::PrintVectorWord(wordSize, vEnWords, title.str());
+
+		return vEnWords;
 	}
 };
 

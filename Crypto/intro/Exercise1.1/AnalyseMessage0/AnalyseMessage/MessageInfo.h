@@ -29,6 +29,8 @@ public:
 	ListListWordFreq wordsListsByFreq;
 	CipherKeyMap cipherKeyMap;
 	MapCTtoPT mapCtPtGuess;
+	MessageInfo_base::ListWordCount listDigraphCount;
+	std::list<std::string> listDigraphByFreq;
 
 	MessageInfo(std::string m)
 		: msg(m)
@@ -134,7 +136,8 @@ public:
 		// note seems I cannot just do not-less-than that causes an exception (probably for )
 		VectorListWordFreq::iterator itVecListWF;
 		ListWordFreq::iterator itListWF;
-		for (VectorListWordFreq::iterator itvlwf = wordsByCharCount.begin(); itvlwf != wordsByCharCount.end(); ++itvlwf) {
+		for (VectorListWordFreq::iterator itvlwf = wordsByCharCount.begin(); itvlwf != wordsByCharCount.end(); ++itvlwf)
+		{
 			(*itvlwf).sort([](const PairWordFreq& a, const PairWordFreq& b) { return (a.second < b.second); });
 			// now reverse the sort order of the sum-list, because I want the word with the greatest frequency to be first
 			(*itvlwf).reverse();
@@ -250,20 +253,23 @@ public:
 	// "frequency sorted" pair(word, freq) list, for words of size wdSz
 	// 
 	// param: size_t wdSz : size of words we want
-	ListWords GetWordListAt(size_t wdSz)
+	VWords GetWordVectorAt(size_t wdSz)
 	{
 		ListWords listWd;
+		MessageInfo_base::VWords vCtWords;
 
 		ListWordFreq& lstCtWdFreq = wordsByCharCount[wdSz];
-		
-		std::cout << "CT: "; 
+		std::stringstream title;
+
+		title << "CT(" << wdSz << "): "; 
 		for (MessageInfo_base::ListWordFreq::iterator ctWdFqIt = lstCtWdFreq.begin(); ctWdFqIt != lstCtWdFreq.end(); ++ctWdFqIt)
 		{
-			std::cout << ctWdFqIt->first << " ";
-			listWd.push_back(ctWdFqIt->first);
+			//std::cout << ctWdFqIt->first << " ";
+			vCtWords.push_back(ctWdFqIt->first);
 		}
-		std::cout << std::endl;
-		return listWd;
+		//std::cout << std::endl;
+		MessageInfo_base::PrintVectorWord(wdSz, vCtWords, title.str());
+		return vCtWords;
 	}
 
 	void GuessWordWithNChar(size_t wdSize, const VectorListWordByFreq& vlwbf) {
@@ -304,6 +310,43 @@ public:
 	std::string WordScore(const std::string& word)
 	{
 		return MessageInfo_base::WordScore(word);
+	}
+
+	std::list<std::string> MakeBigraphFrequencySortedList()
+	{
+		MessageInfo_base::MapDigraphCount mapDigraphCount;
+		MessageInfo_base::VectorWordCount vectorDigraphCount;
+		std::string digraph("  ");
+		// 1) read message 2 char "key"
+		MessageInfo_base::WordCountMap mapDigraph;
+		size_t msgLen = this->msg.size();
+		// 2) iterate through message counting each occurance of "key"
+		for (size_t i = 1; i < msgLen; ++i)
+		{
+			digraph[0] = msg[i - 1];
+			digraph[1] = msg[i];
+			// filter out " a" and "a "
+			if (digraph.compare(0, 1, " ") && digraph.compare(1, 1, " "))
+			{
+				mapDigraph[digraph]++;
+			}
+		}
+		// now create a sorted list of digraph
+		for (MessageInfo_base::MapDigraphCount::iterator itmdgc = mapDigraph.begin(); itmdgc != mapDigraph.end(); ++itmdgc)
+		{
+			MessageInfo_base::PairWordCount data(itmdgc->first, itmdgc->second);
+			listDigraphCount.push_back(data);
+		}
+		// sort largest to smallest
+		listDigraphCount.sort([](const PairWordCount& a, const PairWordCount& b) { return (a.second > b.second); });
+		PrintListWordCount(2, listDigraphCount, "[DIGRAPH LIST - BY FREQUENCY]");
+
+		// now get a list with only the digraph elements (easier to work with for key editing)
+		for (MessageInfo_base::ListDigraphCount::iterator itlwc = listDigraphCount.begin(); itlwc != listDigraphCount.end(); ++itlwc)
+		{
+			listDigraphByFreq.push_back(itlwc->first);
+		}
+		return listDigraphByFreq;
 	}
 };
 

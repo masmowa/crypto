@@ -28,6 +28,49 @@ bool CypherKey::SetKeyValues(const std::string& CT, const std::string& PT)
 	return (!hasCollision);
 }
 
+bool CypherKey::SetKeyValues(const std::vector<std::string>& CT, const std::vector<std::string>& PT)
+{
+	bool hasCollision = false;
+	size_t len = CT.size();
+	size_t wdLen = CT[0].length();
+	// for each word in the set
+	// get the word
+	for (size_t i = 0; i < len; ++i) {
+		std::string wdct = CT[i];
+		std::string wdpt = PT[i];
+		hasCollision = SetKeyValues(wdct, wdpt);
+	}
+	return (!hasCollision);
+
+}
+
+// here we swap the order of CT to PT map to see if this is a better fit (probably not)
+bool CypherKey::SetKeyValuesRev(const std::vector<std::string>& CT, const std::vector<std::string>& PT)
+{
+	bool hasCollision = false;
+	size_t len = CT.size();
+	size_t wdLen = CT[0].length();
+	// for each word in the set
+	// get the word
+	size_t i = len - 1;
+	size_t j = 0;
+	while (i >= 0 && j < len)
+	{
+		std::string wdct = CT[i];
+		std::string wdpt = PT[j];
+		hasCollision = SetKeyValues(wdct, wdpt);
+		--i;
+		++j;
+	}
+	//for (size_t i = len-1, j=0; i >= 0 && j < len; --i, ++j) {
+	//	std::string wdct = CT[i];
+	//	std::string wdpt = PT[j];
+	//	hasCollision = SetKeyValues(wdct, wdpt);
+	//}
+	return (!hasCollision);
+
+}
+
 // send the key contents to std::cout
 void CypherKey::PrintKey()
 {

@@ -57,6 +57,8 @@ public:
 	}
 	bool KeyCollision(const std::string& CT, const std::string& PT);
 	bool SetKeyValues(const std::string& CT, const std::string& PT);
+	bool SetKeyValues(const std::vector<std::string>& CT, const std::vector<std::string>& PT);
+	bool SetKeyValuesRev(const std::vector<std::string>& CT, const std::vector<std::string>& PT);
 	// send the key contents to std::cout
 	void PrintKey();
 	// Create a new string with cipher-text replaced by plain-text
