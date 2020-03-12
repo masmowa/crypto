@@ -36,20 +36,6 @@ void InsertNode(CharFreqNode** head, double fq, char ch)
 		}
 	}
 }
-void DeleteNodes(CharFreqNode* head)
-{
-	CharFreqNode* w = head;
-	CharFreqNode* nxt = w->next;
-	while (w != NULL) {
-		nxt = w->next;
-		w->next = NULL;
-		w->prev = NULL;
-		delete w;
-		w = nxt;
-	} 
-
-
-}
 
 void CountMessageCharacters(const std::string& msg)
 {
@@ -84,7 +70,6 @@ void ProcessInput(std::string const& input)
 
 	CharCount ctCountmap;
 	CharCount::iterator cci;
-	std::list<CharFreqNode> ctCFList;
 	string ct = intoks[1];
 	for (size_t i = 0; i < ct.size(); ++i)
 	{
