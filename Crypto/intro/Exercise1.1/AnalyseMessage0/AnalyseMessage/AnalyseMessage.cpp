@@ -400,7 +400,7 @@ void GuessKeysSmallestToLargest(MessageInfo& ct, EnglishData& eng)
 					if (ptpos != std::string::npos)
 					{
 						// found word with char matching key-plain-text-value
-						itct2
+						itct2;
 					}
 				}
 			}

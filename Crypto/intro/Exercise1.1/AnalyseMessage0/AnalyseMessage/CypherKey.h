@@ -12,6 +12,7 @@ class CypherKey
 {
 public:
 	typedef std::map<char, char> MapKey;
+	// pair CT, PT
 	typedef std::pair<char, char> KeyPair;
 	MapKey key;
 
