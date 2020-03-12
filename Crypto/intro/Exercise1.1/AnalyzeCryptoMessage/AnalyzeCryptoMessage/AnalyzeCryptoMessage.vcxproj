@@ -159,12 +159,14 @@
   <ItemGroup>
     <ClCompile Include="AnalyzeCryptoMessage.cpp" />
     <ClCompile Include="CipherText.cpp" />
+    <ClCompile Include="CypherKey.cpp" />
     <ClCompile Include="EnglishText.cpp" />
     <ClCompile Include="MessageBase.cpp" />
     <ClCompile Include="ProgramSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CipherText.h" />
+    <ClInclude Include="CypherKey.h" />
     <ClInclude Include="EnglishText.h" />
     <ClInclude Include="MessageBase.h" />
     <ClInclude Include="ProgramSettings.h" />

@@ -17,9 +17,12 @@ public:
 	MessageBase::VectorWordCount vectorDigraphCount;
 	// vector of vectors where sub-vectors contain words with same char count.
 	MessageBase::VectorWordSizeVectorWordCount vectorWordCountBySize;
+	MessageBase::VectorWordSizeVectorWords vectorWordSizeVectorWords;
 
 	MessageBase::VectorCharByFrequency vectorCharByFrequency;
 	MessageBase::VectorCharCount vectorCharCount;
+
+
 	CipherText() : verbose(ProgramSettings::IsVerbose())
 	{
 
@@ -55,5 +58,8 @@ public:
 	void CreateVectorCharactersSortedMostToLeast();
 	// print the contents of the Char, Count vector
 	void PrintVectorCharCount();
+	void PrintCharByFreq();
+	// construct a vector containing the first N words of size M
+	std::vector<std::string> GetFirstNofWordSize(size_t count, size_t wdLen);
 };
 

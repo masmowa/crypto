@@ -88,5 +88,10 @@ public:
 		vvWordsByFreq.push_back(wd4ByFreq);
 
 	}
+	void PrintCharByFreq();
+	// construct a vector containing the first N words of size M
+	std::vector<std::string> GetFirstNofWordSize(size_t count, size_t wdLen);
 };
+
+
 

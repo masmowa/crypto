@@ -17,6 +17,7 @@
 #include "ProgramSettings.h"
 #include "CipherText.h"
 #include "EnglishText.h"
+#include "CypherKey.h"
 
 using namespace std;
 
@@ -73,8 +74,43 @@ void WriteDTSOutputName(const std::string& prefix)
 
 void DecryptMessage(CipherText& CT, EnglishText& eng)
 {
-	std::cout << "++" << __FUNCTION__ << std::endl;
+	std::cout << "++" << __FUNCTION__ << "()" << std::endl;
+	static int sizeOrder[] = { 1, 3, 2, 4 };
+	// guess key
+	CypherKey key("Guess0");
+	// Pre-guess words with 1 char, there are 2
+	for (size_t cc = 0; cc < 4; ++cc)
+	{
+		int sel = sizeOrder[cc];
+		MessageBase::VectorWords ctWdLN;
+		MessageBase::VectorWords ptWdLN;
+		if (sel == 1)
+		{
+			ctWdLN = CT.vectorWordSizeVectorWords[sel];
+			ptWdLN = eng.monoWdByFreq;
+		}
+		else
+		{
+			ctWdLN = CT.GetFirstNofWordSize(2, sel);
+			ptWdLN = eng.GetFirstNofWordSize(2, sel);
+		}
+		for (size_t z = 0; z < ctWdLN.size(); ++z)
+		{
+			std::cout << "CT[" << ctWdLN[z] << "] guess PT[" << ptWdLN[z] << "]\n";
+		}
+		key.SetKeyValues(ctWdLN, ptWdLN);
+		std::cout << std::endl;
+	}
+	key.SetKeyValuesFromCtCharCount(CT.vectorCharCount, eng.alphaByFreq);
+	key.PrintKey();
+	CT.PrintCharByFreq();
+	eng.PrintCharByFreq();
+	std::cout << std::endl;
+	std::string decrypted = key.Decipher(CT.message);
+	std::cout << "Decryption guess 0: " << std::endl;
+	std::cout << decrypted << std::endl;
 
+	std::cout << "--" << __FUNCTION__ << "()" << std::endl;
 }
 void ProcessInput(std::string const& input)
 {

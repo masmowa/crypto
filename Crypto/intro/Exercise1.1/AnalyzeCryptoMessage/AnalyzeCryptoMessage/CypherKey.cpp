@@ -18,10 +18,17 @@ bool CypherKey::SetKeyValues(const std::string& CT, const std::string& PT)
 {
 	bool hasCollision = KeyCollision(CT, PT);
 
-	if (!hasCollision)
+	for (size_t i = 0; i < CT.size(); ++i)
 	{
-		for (size_t i = 0; i < CT.size(); ++i)
+		if (key[CT[i]] != '?')
 		{
+			std::cout << "guess: CT:[" << CT[i] << "] Eng: [" << key[CT[i]] << "] eng guess: [" << PT[i] << "]" << std::endl;
+			continue;
+		}
+		bool found = KeyHasPtVal(PT[i]);
+
+		// prevent duplicate guess 
+		if (!found) {
 			key[CT[i]] = PT[i];
 		}
 	}
@@ -105,4 +112,48 @@ std::string CypherKey::Decipher(const std::string& CT)
 
 	}
 	return ssPt.str();
+}
+
+
+// match Cyper-Text to Plain-Text based on "frequency" from frequency sorted vectors
+bool CypherKey::SetKeyValuesFromCtCharCount(const MessageBase::VectorCharCount vCT, const std::vector<char>& PT)
+{
+	bool hasCollision = false;
+	// TODO: Add your implementation code here.
+	for (size_t i=0, j=0; i < vCT.size() && j < PT.size(); ++i, ++j)
+	{
+		if (vCT[i].second < 10)
+		{
+			break;
+		}
+		// check if this PT value is already in the key
+		bool ptValFound = KeyHasPtVal(PT[j]);
+		if (key[vCT[i].first] != '?')
+		{
+			std::cout << "key: " << vCT[i].first << " val: " << key[vCT[i].first] << " eng guess: " << PT[j] << std::endl;
+			// if key.english-value does not matche the PT[j] value
+			// and if j > 0 
+			// use this PT[j] value in the next guess.
+			//if (key[vCT[i].first] != PT[j] && (j > 0))
+			//{
+			//	j--;
+			//}
+			continue;
+		}
+		if (!ptValFound) {
+			key[vCT[i].first] = PT[j];
+		}
+	}
+	return hasCollision;
+}
+
+
+bool CypherKey::KeyHasPtVal(const char guess)
+{
+	bool found = false;
+	for (MapKey::iterator itk = key.begin(); itk != key.end() & !found; ++itk)
+	{
+		found = (itk->second == guess);
+	}
+	return found;
 }

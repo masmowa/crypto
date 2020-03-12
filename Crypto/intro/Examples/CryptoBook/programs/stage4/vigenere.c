@@ -123,7 +123,7 @@ void write_text (FILE *outfile, int *buffer, int length, int m){
     putc(number_to_alphabet[buffer[i]], outfile);
     if (m!=0) {
       if ((i + 1) % m == 0) {
-	putc('\n',outfile);
+	      putc('\n',outfile);
       }
     }
   }

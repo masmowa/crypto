@@ -85,14 +85,6 @@ void CipherText::AnalyzeMessageDigraphs()
 	}
 	// sort largest to smallest
 	std::sort(vectorDigraphCount.begin(), vectorDigraphCount.end(),[](const PairWordCount& a, const PairWordCount& b) { return (a.second < b.second); });
-	//PrintListWordCount(2, vectorDigraphCount, "[DIGRAPH LIST - BY FREQUENCY]");
-
-	//// now get a list with only the digraph elements (easier to work with for key editing)
-	//for (MessageBase::vectorDigraphCount::iterator itlwc = vectorDigraphCount.begin(); itlwc != vectorDigraphCount.end(); ++itlwc)
-	//{
-	//	listDigraphByFreq.push_back(itlwc->first);
-	//}
-	//return listDigraphByFreq;
 }
 
 
@@ -138,7 +130,6 @@ void CipherText::CreateWordSizeVectorCollection()
 	{
 		std::cout << "++" << __FUNCTION__ << "()" << std::endl;
 	}
-	// TODO: 
 	for (MapWordCount::iterator itwc = mapWordCount.begin(); itwc != mapWordCount.end(); ++itwc)
 	{
 		MessageBase::PairWordCount data(itwc->first, itwc->second);
@@ -148,6 +139,11 @@ void CipherText::CreateWordSizeVectorCollection()
 			vectorWordCountBySize.resize(pos + 1);
 		}
 		vectorWordCountBySize[pos].push_back(data);
+		if (pos >= vectorWordSizeVectorWords.size())
+		{
+			vectorWordSizeVectorWords.resize(pos + 1);
+		}
+		vectorWordSizeVectorWords[pos].push_back(data.first);
 	}
 
 	// NOW SORT sub-vectors by frequency (aka word count)
@@ -186,4 +182,26 @@ void CipherText::PrintVectorCharCount()
 	{
 		std::cout << itvcc->first << " " << itvcc->second << std::endl;
 	}
+}
+
+
+void CipherText::PrintCharByFreq()
+{
+	std::cout << "Characters Count order:" << std::endl;
+	// 
+	for (VectorCharCount::iterator itvcc = vectorCharCount.begin(); itvcc != vectorCharCount.end(); ++itvcc)
+	{
+		std::cout << itvcc->first;
+	}
+	std::cout << std::endl;
+}
+
+
+// construct a vector containing the first N words of size M
+std::vector<std::string> CipherText::GetFirstNofWordSize(size_t count, size_t wdLen)
+{
+	MessageBase::VectorWords::const_iterator t = vectorWordSizeVectorWords[wdLen].begin();
+	MessageBase::VectorWords::const_iterator tx = vectorWordSizeVectorWords[wdLen].begin() +2;
+	MessageBase::VectorWords res(t, tx);
+	return res;
 }

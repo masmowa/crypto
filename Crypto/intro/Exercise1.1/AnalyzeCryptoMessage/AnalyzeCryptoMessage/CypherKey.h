@@ -7,8 +7,8 @@
 #include <map>
 #include <algorithm>
 #include <sstream>
-
-class CypherKey
+#include"MessageBase.h"
+class CypherKey : public MessageBase
 {
 public:
 	typedef std::map<char, char> MapKey;
@@ -71,5 +71,8 @@ public:
 	{
 		name = val;
 	}
+	// match Cyper-Text to Plain-Text based on "frequency" from frequency sorted vectors
+	bool SetKeyValuesFromCtCharCount(const MessageBase::VectorCharCount vCT, const std::vector<char>& PT);
+	bool KeyHasPtVal(const char guess);
 };
 
