@@ -15,6 +15,7 @@ public:
 	typedef std::map<std::string, double> MapStringFreq;
 
 	typedef std::map<std::string, int> MapWordCount;
+	typedef std::map<std::string, std::string> MapWord;
 	typedef std::pair<std::string, int> PairWordCount;
 	typedef std::vector<PairWordCount> VectorWordCount;
 	typedef std::pair<std::string, std::string> PairWordWord;

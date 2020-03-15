@@ -15,6 +15,8 @@ public:
 	// pair CT, PT
 	typedef std::pair<char, char> KeyPair;
 	MapKey key;
+	// hold word strings ct,pt pair
+	MapWord mapWordKey;
 
 	CypherKey()
 	{
@@ -74,5 +76,6 @@ public:
 	// match Cyper-Text to Plain-Text based on "frequency" from frequency sorted vectors
 	bool SetKeyValuesFromCtCharCount(const MessageBase::VectorCharCount vCT, const std::vector<char>& PT);
 	bool KeyHasPtVal(const char guess);
+	bool InsertWordKey(const std::string& CT, const std::string& PT);
 };
 

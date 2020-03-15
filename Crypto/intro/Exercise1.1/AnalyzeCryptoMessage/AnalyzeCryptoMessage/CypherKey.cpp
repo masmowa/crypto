@@ -16,7 +16,7 @@ bool CypherKey::KeyCollision(const std::string& CT, const std::string& PT)
 
 bool CypherKey::SetKeyValues(const std::string& CT, const std::string& PT)
 {
-	bool hasCollision = KeyCollision(CT, PT);
+	bool ptUsed = false;
 
 	for (size_t i = 0; i < CT.size(); ++i)
 	{
@@ -25,19 +25,20 @@ bool CypherKey::SetKeyValues(const std::string& CT, const std::string& PT)
 			std::cout << "guess: CT:[" << CT[i] << "] Eng: [" << key[CT[i]] << "] eng guess: [" << PT[i] << "]" << std::endl;
 			continue;
 		}
-		bool found = KeyHasPtVal(PT[i]);
+		ptUsed = KeyHasPtVal(PT[i]);
 
 		// prevent duplicate guess 
-		if (!found) {
+		if (!ptUsed) {
 			key[CT[i]] = PT[i];
 		}
 	}
-	return (!hasCollision);
+	return (!ptUsed);
 }
 
 bool CypherKey::SetKeyValues(const std::vector<std::string>& CT, const std::vector<std::string>& PT)
 {
 	bool hasCollision = false;
+	bool hasCollision1 = false;
 	size_t len = CT.size();
 	size_t wdLen = CT[0].length();
 	// for each word in the set
@@ -45,6 +46,7 @@ bool CypherKey::SetKeyValues(const std::vector<std::string>& CT, const std::vect
 	for (size_t i = 0; i < len; ++i) {
 		std::string wdct = CT[i];
 		std::string wdpt = PT[i];
+		hasCollision1 = InsertWordKey(wdct, wdpt);
 		hasCollision = SetKeyValues(wdct, wdpt);
 	}
 	return (!hasCollision);
@@ -92,6 +94,7 @@ void CypherKey::PrintKey()
 
 
 // Create a new string with cipher-text replaced by plain-text
+// TODO: Want to have a way to use mapKeyWord to fill out the decrypted message
 std::string CypherKey::Decipher(const std::string& CT)
 {
 	std::stringstream ssPt;
@@ -131,13 +134,6 @@ bool CypherKey::SetKeyValuesFromCtCharCount(const MessageBase::VectorCharCount v
 		if (key[vCT[i].first] != '?')
 		{
 			std::cout << "key: " << vCT[i].first << " val: " << key[vCT[i].first] << " eng guess: " << PT[j] << std::endl;
-			// if key.english-value does not matche the PT[j] value
-			// and if j > 0 
-			// use this PT[j] value in the next guess.
-			//if (key[vCT[i].first] != PT[j] && (j > 0))
-			//{
-			//	j--;
-			//}
 			continue;
 		}
 		if (!ptValFound) {
@@ -156,4 +152,14 @@ bool CypherKey::KeyHasPtVal(const char guess)
 		found = (itk->second == guess);
 	}
 	return found;
+}
+
+bool CypherKey::InsertWordKey(const std::string& CT, const std::string& PT)
+{
+	bool inserted = false;
+	if (mapWordKey.count(CT) == 0)
+	{
+		mapWordKey[CT] = PT;
+	}
+	return inserted;
 }

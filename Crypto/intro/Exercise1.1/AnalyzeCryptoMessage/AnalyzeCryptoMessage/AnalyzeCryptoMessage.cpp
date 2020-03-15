@@ -79,6 +79,12 @@ void DecryptMessage(CipherText& CT, EnglishText& eng)
 	// guess key
 	CypherKey key("Guess0");
 	// Pre-guess words with 1 char, there are 2
+
+	// todo: make decipher into aset of trial attempts 
+	// with a prompt to ask if the current guess is acceptable
+	// if it is not, pop the last guess off the stack
+	// 
+
 	for (size_t cc = 0; cc < 4; ++cc)
 	{
 		int sel = sizeOrder[cc];
@@ -99,6 +105,12 @@ void DecryptMessage(CipherText& CT, EnglishText& eng)
 			std::cout << "CT[" << ctWdLN[z] << "] guess PT[" << ptWdLN[z] << "]\n";
 		}
 		key.SetKeyValues(ctWdLN, ptWdLN);
+		// after we set some guesses, 
+		// perform some attempt at decryption with the 
+		// current partial key.  show the message and the 
+		// partially decrypted message to the user
+		// prompt for pass / fail judgement
+		// if pass then procede to next set of guesses
 		std::cout << std::endl;
 	}
 	key.SetKeyValuesFromCtCharCount(CT.vectorCharCount, eng.alphaByFreq);
@@ -119,18 +131,10 @@ void ProcessInput(std::string const& input)
 	CipherText msgCt(ct);
 	EnglishText english;
 
-	//msgCt.PrintCharCount();
-	//msgCt.PrintWordCount();
-	//msgCt.CalcCharPercent();
-	//msgCt.CalcWordPercent();
 	std::cout << "Percent " << std::endl;
-	//msgCt.printCharPercent();
-	//msgCt.printWordPercent();
+
 	msgCt.PrintWordsBySizeCount();
 
-	//msgCt.GuessWordWithNChar(4, english.vlWordsByFreq);
-	//msgCt.GuessWordsFromNCharWidth(4, english.vlWordsByFreq);
-	//DirectWordGuessingFromL4(msgCt, english);
 	DecryptMessage(msgCt, english);
 }
 
